@@ -1,0 +1,447 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CodeBurgerApi Documentation",
+    "description": "This is an Api CodeBurger",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create a User",
+        "description": "Create a new User",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/User"
+              },
+              "example": {
+                "name": "bruuooo",
+                "email": "bruuooo@email.com",
+                "password": "bruuuooo123",
+                "admin": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "created"
+          },
+          "409": {
+            "description": "user already exists"
+          },
+          "400": {
+            "description": "validate error"
+          }
+        }
+      }
+    },
+    "/sessions": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Login account",
+        "description": "Login user account",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Sessions"
+              },
+              "example": {
+                "email": "bruuooo@email.com",
+                "password": "bruuuooo123"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Validate error"
+          }
+        }
+      }
+    },
+    "/categories": {
+      "post": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Category"],
+        "summary": "Create a Category",
+        "description": "Create a new Category",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/definitions/Category",
+                "example": {
+                  "file": "file_content",
+                  "name": "Lanches"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Validate error"
+          },
+          "401": {
+            "description": "The user is not an administrator"
+          }
+        }
+      },
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Category"],
+        "summary": "List Categories",
+        "description": "List all Categories",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/categories/{id}": {
+      "put": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Category"],
+        "summary": "Update a Category",
+        "description": "Update a Category",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id of the category to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/definitions/Category",
+                "example": {
+                  "id": 12,
+                  "file": "file_content",
+                  "name": "Hamburgers"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Validate error"
+          },
+          "401": {
+            "description": "The user is not an administrator or category id invalid"
+          }
+        }
+      }
+    },
+    "/products": {
+      "post": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Product"],
+        "summary": "Create a Product",
+        "description": "Create a new Product",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/definitions/Product",
+                "example": {
+                  "file": "file_content",
+                  "name": "Hamburger",
+                  "price": 30,
+                  "category_id": "12",
+                  "offer": false
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Validate error"
+          },
+          "401": {
+            "description": "The user is not an administrator"
+          }
+        }
+      },
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Product"],
+        "summary": "List Products",
+        "description": "List all Products",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "put": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Product"],
+        "summary": "Update a Product",
+        "description": "Update a Product",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id of the product to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/definitions/Category",
+                "example": {
+                  "file": "file_content",
+                  "name": "Sobremesas"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Validate error"
+          },
+          "401": {
+            "description": "The user is not an administrator or product id invalid"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "post": {
+        "tags": ["Order"],
+        "summary": "Create an Order",
+        "description": "Create a new order with the specified products",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Order"
+              },
+              "example": {
+                "products": [
+                  { "id": 1, "quantity": 2 },
+                  { "id": 2, "quantity": 1 }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Order"],
+        "summary": "List Orders",
+        "description": "List all Orders",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "put": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Order"],
+        "summary": "Update status of order",
+        "description": "Update the status of an order, the order status may have these updates: 'Pedido realizado', 'Em preparação', 'Pedido pronto', 'Pedido a caminho', 'Entregue'",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Id of an order to update",
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/OrderStatus",
+                "example": {
+                  "status": "Entregue"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Validate error or update error"
+          },
+          "401": {
+            "description": "The user is not an administrator"
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "admin": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Sessions": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string",
+          "format": "binary"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Product": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string",
+          "format": "binary"
+        },
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "category_id": {
+          "type": "string"
+        },
+        "offer": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "products": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "description": "ID of the product"
+              },
+              "quantity": {
+                "type": "number",
+                "description": "Quantity of the product"
+              }
+            },
+            "required": ["id", "quantity"]
+          }
+        }
+      },
+      "required": ["products"]
+    },
+    "OrderStatus": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "Pedido realizado",
+            "Em preparação",
+            "Pedido pronto",
+            "Pedido a caminho",
+            "Entregue"
+          ],
+          "description": "The order status may have these updates: 'Pedido realizado', 'Em preparação', 'Pedido pronto', 'Pedido a caminho', 'Entregue'"
+        }
+      },
+      "required": ["status"]
+    }
+  },
+
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

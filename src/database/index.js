@@ -10,19 +10,26 @@ const models = [User, Product, Category];
 class Database {
   constructor() {
     this.init();
-    this.mongo()
+    this.mongo();
   }
 
   init() {
-    this.connection = new Sequelize('postgresql://postgres:HnZPvGjsoBlu3YZtN271@containers-us-west-97.railway.app:6798/railway');
-    models.map((model) => model.init(this.connection)).map(model => model.associate && model.associate(this.connection.models));
+    this.connection = new Sequelize(configDatabase.url);
+    models
+      .map((model) => model.init(this.connection))
+      .map(
+        (model) => model.associate && model.associate(this.connection.models)
+      );
   }
 
-  mongo(){
-    this.mongoConnection = mongoose.connect('mongodb://mongo:JzX1q5m6qWh1RR6NcJ6x@containers-us-west-20.railway.app:7087', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
+  mongo() {
+    this.mongoConnection = mongoose.connect(
+      "mongodb://mongo_codeburger:mongo@codeburger_mongo:27017",
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    );
   }
 }
 export default new Database();

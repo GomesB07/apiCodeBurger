@@ -1,0 +1,49 @@
+services:
+  codeburger_app:
+    build: .
+    container_name: codeburger
+    ports:
+      - "3001:3001"
+    depends_on:
+      - codeburger_postgres
+      - codeburger_mongo
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - app-network
+
+  codeburger_postgres:
+    image: postgres
+    container_name: codeburger_postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: codeburger_postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: codeburger
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  codeburger_mongo:
+    image: mongo
+    container_name: codeburger_mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo_codeburger
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  pgdata:
+  mongo-data:
