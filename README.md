@@ -57,6 +57,12 @@ docker-compose start
 docker-compose stop
 ```
 
+# Documentação das rotas
+## É possível acessar a documentação das rotas em
+```bash
+http://localhost:3001/api-docs
+```
+
 ## 🛠️ Construído com
 
 * [Node](https://nodejs.org/pt)
