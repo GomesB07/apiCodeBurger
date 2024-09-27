@@ -76,6 +76,7 @@ http://localhost:3001/api-docs
 * [Sequelize](https://sequelize.org/) - ORM
 * [Uuid](https://www.npmjs.com/package/uuid) - Biblioteca utilizada para gerar id de usuário,
 * [Yup](https://github.com/jquense/yup) - Utilizado para validação de schema
+* [Swagger](https://swagger.io/) - Utilizado para documentar as rotas
 
 ## Acesse o repositório do Front end
 
